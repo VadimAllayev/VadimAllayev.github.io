@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vadim Allayev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <nav id="nav">
+    <div class="nav-inner">
+      <span class="nav-name">Vadim Allayev</span>
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Toggle menu">&#9776;</button>
+    </div>
+  </nav>
+
+  <section id="hero">
+    <div class="hero-inner">
+      <div class="avatar">VA</div>
+      <h1>Vadim Allayev</h1>
+      <p class="tagline">"Going confidently in the direction of my dreams"</p>
+      <p class="hero-sub">Android &amp; Kotlin Multiplatform Developer</p>
+      <div class="hero-cta">
+        <a href="#projects" class="btn-primary">See my work</a>
+        <a href="#contact" class="btn-outline">Get in touch</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="section-inner">
+      <h2>About Me</h2>
+      <div class="about-body">
+        <div class="about-photo-slot">
+          <div class="photo-placeholder">
+            <span>Photo<br/>coming soon</span>
+          </div>
+        </div>
+        <div class="about-text">
+          <p>I'm a developer passionate about building apps that make a meaningful impact. My work centers on Android and Kotlin Multiplatform development — bringing ideas from concept to a polished product that people actually love to use.</p>
+          <p>I built <strong>Avodah</strong>, a Jewish prayer and learning app designed to make traditional Jewish practice more accessible, with a full digital Siddur, interactive learning, and daily Torah content.</p>
+          <p>I care about clean code, thoughtful UX, and shipping things that matter.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="section-inner">
+      <h2>Skills</h2>
+      <div class="skills-grid">
+        <div class="skill-chip">Kotlin</div>
+        <div class="skill-chip">Android</div>
+        <div class="skill-chip">Jetpack Compose</div>
+        <div class="skill-chip">Kotlin Multiplatform</div>
+        <div class="skill-chip">iOS Development</div>
+        <div class="skill-chip">Python</div>
+        <div class="skill-chip">MVVM</div>
+        <div class="skill-chip">Material Design 3</div>
+        <div class="skill-chip">Ktor</div>
+        <div class="skill-chip">REST APIs</div>
+        <div class="skill-chip">JSON / Serialization</div>
+        <div class="skill-chip">Git</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="section-inner">
+      <h2>Projects</h2>
+      <div class="project-card">
+        <div class="project-header">
+          <div>
+            <h3>Avodah</h3>
+            <div class="project-tags">
+              <span class="tag">Android</span>
+              <span class="tag">iOS</span>
+              <span class="tag">KMP</span>
+            </div>
+          </div>
+        </div>
+        <p class="project-desc">A Jewish prayer and learning app for the Baal Teshuvah community. Features a full digital Siddur with Sephardic and Ashkenazic nusach variants, an interactive Skill Tree for learning prayers step by step, a Food Blessings game, daily Torah content via the Sefaria API, and Hebrew calendar integration.</p>
+        <div class="project-tech">
+          <span>Kotlin</span>
+          <span>Jetpack Compose</span>
+          <span>Kotlin Multiplatform</span>
+          <span>Ktor</span>
+          <span>MVVM</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/VadimAllayev" target="_blank" rel="noopener" class="btn-outline btn-sm">View on GitHub &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="section-inner contact-inner">
+      <h2>Get In Touch</h2>
+      <p class="contact-intro">I'd love to connect — whether it's about a project, a collaboration, or just to say hello.</p>
+      <div class="contact-links">
+        <a href="mailto:avodah.app@gmail.com" class="contact-item">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
+          avodah.app@gmail.com
+        </a>
+        <a href="https://github.com/VadimAllayev" target="_blank" rel="noopener" class="contact-item">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.085 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          VadimAllayev
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2026 Vadim Allayev</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
