@@ -1,3 +1,28 @@
+// Sun or moon based on time of day
+(function () {
+  const hour = new Date().getHours();
+  let emoji;
+  if (hour >= 6 && hour < 8)       emoji = '🌅'; // dawn
+  else if (hour >= 8 && hour < 18) emoji = '☀️';  // day
+  else if (hour >= 18 && hour < 20) emoji = '🌇'; // dusk
+  else                              emoji = '🌙'; // night
+
+  const el = document.createElement('div');
+  el.textContent = emoji;
+  el.style.cssText = `
+    position: fixed;
+    top: 72px;
+    right: 20px;
+    font-size: 2rem;
+    z-index: 99;
+    pointer-events: none;
+    user-select: none;
+    line-height: 1;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+  `;
+  document.body.appendChild(el);
+})();
+
 // Duck that follows the mouse
 (function () {
   const duck = document.createElement('div');
@@ -109,7 +134,6 @@
     item('🌲', 1,  0.58, '3rem');
     item('🌳', 2,  0.71, '2.8rem');
     item('🌲', 1,  0.85, '2.5rem');
-    item('🌳', 2,  0.96, '2.8rem');
 
     // Trees — right edge
     item('🌳', 89, 0.07, '3.5rem');
@@ -118,7 +142,6 @@
     item('🌲', 90, 0.50, '2.6rem');
     item('🌳', 89, 0.63, '3rem');
     item('🌲', 91, 0.77, '2.5rem');
-    item('🌳', 89, 0.90, '2.8rem');
 
     // Foliage & flowers — left, between trees
     item('🌿', 5,  0.11, '1.6rem');
@@ -127,7 +150,6 @@
     item('🌺', 4,  0.53, '1.5rem');
     item('🌻', 6,  0.67, '1.5rem');
     item('🌿', 5,  0.80, '1.6rem');
-    item('🌸', 4,  0.93, '1.4rem');
 
     // Foliage & flowers — right
     item('🌻', 85, 0.14, '1.5rem');
@@ -136,7 +158,6 @@
     item('🌼', 87, 0.56, '1.5rem');
     item('🌺', 85, 0.70, '1.4rem');
     item('🌿', 86, 0.83, '1.7rem');
-    item('🌼', 85, 0.97, '1.5rem');
 
 
     // Wandering animals — each starts at a different depth
