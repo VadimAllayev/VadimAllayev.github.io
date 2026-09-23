@@ -57,100 +57,131 @@
 (function () {
   const style = document.createElement('style');
   style.textContent = `
-    .ls { position:fixed; pointer-events:none; user-select:none; z-index:1; line-height:1; }
+    .ls { position:absolute; pointer-events:none; user-select:none; z-index:2; line-height:1; }
     .ls-pond {
-      position:fixed; pointer-events:none; z-index:1;
+      position:absolute; pointer-events:none; z-index:1;
       border-radius:50%;
       background: radial-gradient(ellipse at 38% 32%, #b3e5fc, #29b6f6 55%, #0277bd);
       box-shadow: inset 0 2px 10px rgba(255,255,255,0.5), 0 4px 18px rgba(2,119,189,0.2);
       animation: pondShimmer 5s ease-in-out infinite;
     }
     @keyframes pondShimmer { 0%,100%{opacity:.82} 50%{opacity:1} }
-    .wander { position:fixed; pointer-events:none; user-select:none; z-index:9998; line-height:1; }
-    @media (max-width: 1100px) { .ls, .ls-pond { display:none; } }
+    .wander { position:absolute; pointer-events:none; user-select:none; z-index:2; line-height:1; }
+    @media (max-width: 900px) { .ls, .ls-pond, .wander { display:none; } }
   `;
   document.head.appendChild(style);
 
-  function pond(left, top, w, h) {
-    const el = document.createElement('div');
-    el.className = 'ls-pond';
-    el.style.cssText = `left:${left};top:${top};width:${w}px;height:${h}px;`;
-    document.body.appendChild(el);
+  if (getComputedStyle(document.body).position === 'static') {
+    document.body.style.position = 'relative';
   }
 
-  function item(emoji, left, top, size) {
-    const el = document.createElement('div');
-    el.className = 'ls';
-    el.textContent = emoji;
-    el.style.cssText = `left:${left};top:${top};font-size:${size};`;
-    document.body.appendChild(el);
-  }
+  const wanderers = [];
 
-  // Ponds
-  pond('2%',  '42vh', 148, 84);
-  pond('81%', '64vh', 128, 70);
+  window.addEventListener('load', () => {
+    const docH = document.documentElement.scrollHeight;
+    const W    = window.innerWidth;
 
-  // Trees — left edge
-  item('🌲', '1%',  '7vh',  '3.2rem');
-  item('🌳', '2%',  '27vh', '2.8rem');
-  item('🌲', '1%',  '54vh', '3rem');
-  item('🌳', '0%',  '78vh', '2.6rem');
+    function pond(leftPct, topFrac, w, h) {
+      const el = document.createElement('div');
+      el.className = 'ls-pond';
+      el.style.cssText = `left:${leftPct}%;top:${Math.round(docH * topFrac)}px;width:${w}px;height:${h}px;`;
+      document.body.appendChild(el);
+    }
 
-  // Trees — right edge
-  item('🌳', '89%', '11vh', '3.5rem');
-  item('🌲', '91%', '34vh', '2.8rem');
-  item('🌳', '89%', '57vh', '3rem');
-  item('🌲', '90%', '82vh', '2.5rem');
+    function item(emoji, leftPct, topFrac, size) {
+      const el = document.createElement('div');
+      el.className = 'ls';
+      el.textContent = emoji;
+      el.style.cssText = `left:${leftPct}%;top:${Math.round(docH * topFrac)}px;font-size:${size};`;
+      document.body.appendChild(el);
+    }
 
-  // Foliage & flowers — left
-  item('🌿', '5%',  '19vh', '1.6rem');
-  item('🌸', '6%',  '38vh', '1.5rem');
-  item('🌼', '4%',  '62vh', '1.4rem');
-  item('🌺', '3%',  '89vh', '1.5rem');
+    // Three ponds spread across the page
+    pond(2,  0.18, 150, 84);
+    pond(83, 0.48, 138, 76);
+    pond(3,  0.76, 132, 72);
 
-  // Foliage & flowers — right
-  item('🌻', '85%', '22vh', '1.5rem');
-  item('🌿', '86%', '47vh', '1.7rem');
-  item('🌸', '85%', '74vh', '1.4rem');
-  item('🌼', '87%', '91vh', '1.5rem');
+    // Trees — left edge, one every ~14% of page
+    item('🌲', 1,  0.04, '3.2rem');
+    item('🌳', 2,  0.17, '2.8rem');
+    item('🌲', 1,  0.30, '3rem');
+    item('🌳', 2,  0.44, '2.6rem');
+    item('🌲', 1,  0.58, '3rem');
+    item('🌳', 2,  0.71, '2.8rem');
+    item('🌲', 1,  0.85, '2.5rem');
+    item('🌳', 2,  0.96, '2.8rem');
 
-  // Lily pads & rocks on/near ponds
-  item('🪷', '4%',  '44vh', '1.1rem');
-  item('🪷', '83%', '66vh', '1rem');
-  item('🪨', '7%',  '49vh', '1.2rem');
-  item('🪨', '87%', '71vh', '1.1rem');
+    // Trees — right edge
+    item('🌳', 89, 0.07, '3.5rem');
+    item('🌲', 91, 0.21, '2.8rem');
+    item('🌳', 89, 0.35, '3rem');
+    item('🌲', 90, 0.50, '2.6rem');
+    item('🌳', 89, 0.63, '3rem');
+    item('🌲', 91, 0.77, '2.5rem');
+    item('🌳', 89, 0.90, '2.8rem');
 
-  // --- Wandering animals ---
-  const defs = [
-    { emoji: '🐇', speed: 2.2, size: 26 },
-    { emoji: '🦊', speed: 1.6, size: 28 },
-    { emoji: '🐢', speed: 0.8, size: 24 },
-    { emoji: '🦋', speed: 1.4, size: 22, floaty: true },
-    { emoji: '🐿️', speed: 2.8, size: 22 },
-  ];
+    // Foliage & flowers — left, between trees
+    item('🌿', 5,  0.11, '1.6rem');
+    item('🌸', 6,  0.24, '1.5rem');
+    item('🌼', 5,  0.38, '1.4rem');
+    item('🌺', 4,  0.53, '1.5rem');
+    item('🌻', 6,  0.67, '1.5rem');
+    item('🌿', 5,  0.80, '1.6rem');
+    item('🌸', 4,  0.93, '1.4rem');
 
-  const wanderers = defs.map(def => {
-    const el = document.createElement('div');
-    el.className = 'wander';
-    el.style.fontSize = def.size + 'px';
-    el.textContent = def.emoji;
-    document.body.appendChild(el);
-    return {
-      el,
-      speed: def.speed,
-      floaty: def.floaty || false,
-      floatOffset: Math.random() * Math.PI * 2,
-      walkFrame: 0,
-      x: 40 + Math.random() * (window.innerWidth - 80),
-      y: 40 + Math.random() * (window.innerHeight - 80),
-      targetX: 40 + Math.random() * (window.innerWidth - 80),
-      targetY: 40 + Math.random() * (window.innerHeight - 80),
-    };
+    // Foliage & flowers — right
+    item('🌻', 85, 0.14, '1.5rem');
+    item('🌿', 86, 0.27, '1.7rem');
+    item('🌸', 85, 0.41, '1.4rem');
+    item('🌼', 87, 0.56, '1.5rem');
+    item('🌺', 85, 0.70, '1.4rem');
+    item('🌿', 86, 0.83, '1.7rem');
+    item('🌼', 85, 0.97, '1.5rem');
+
+    // Lily pads & rocks near each pond
+    item('🪷', 4,  0.20, '1.1rem');
+    item('🪨', 7,  0.22, '1.2rem');
+    item('🪷', 85, 0.50, '1rem');
+    item('🪨', 87, 0.52, '1.1rem');
+    item('🪷', 5,  0.78, '1.1rem');
+    item('🪨', 2,  0.80, '1.2rem');
+
+    // Wandering animals — each starts at a different depth
+    const defs = [
+      { emoji: '🐇', speed: 2.2, size: 26 },
+      { emoji: '🦊', speed: 1.6, size: 28 },
+      { emoji: '🐢', speed: 0.8, size: 24 },
+      { emoji: '🦋', speed: 1.4, size: 22, floaty: true },
+      { emoji: '🐿️', speed: 2.8, size: 22 },
+    ];
+
+    defs.forEach((def, i) => {
+      const el = document.createElement('div');
+      el.className = 'wander';
+      el.style.fontSize = def.size + 'px';
+      el.textContent = def.emoji;
+      document.body.appendChild(el);
+
+      const startY = (docH / defs.length) * i + 120;
+      const startX = 30 + Math.random() * (W - 60);
+      wanderers.push({
+        el, speed: def.speed,
+        floaty: def.floaty || false,
+        floatOffset: Math.random() * Math.PI * 2,
+        walkFrame: 0,
+        x: startX, y: startY,
+        targetX: 30 + Math.random() * (W - 60),
+        targetY: 60  + Math.random() * (docH - 120),
+      });
+    });
+
+    tick();
   });
 
   function newTarget(a) {
-    a.targetX = 40 + Math.random() * (window.innerWidth - 80);
-    a.targetY = 40 + Math.random() * (window.innerHeight - 80);
+    const docH = document.documentElement.scrollHeight;
+    a.targetX = 30 + Math.random() * (window.innerWidth - 60);
+    a.targetY = 60 + Math.random() * (docH - 120);
   }
 
   function tick() {
@@ -172,8 +203,6 @@
     });
     requestAnimationFrame(tick);
   }
-
-  tick();
 })();
 
 // Nav shadow on scroll
