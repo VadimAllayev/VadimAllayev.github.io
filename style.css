@@ -166,7 +166,7 @@ a { color: inherit; text-decoration: none; }
 .btn-sm { padding: 8px 18px; font-size: 0.85rem; }
 
 /* ── Sections ───────────────────────────────────────── */
-section { padding: 80px 24px; }
+section { padding: 80px 24px; position: relative; z-index: 3; }
 section:nth-child(even) { background: var(--cream-dark); }
 
 .section-inner {
@@ -364,6 +364,8 @@ footer {
   background: var(--text);
   color: rgba(255,255,255,0.5);
   font-size: 0.85rem;
+  position: relative;
+  z-index: 3;
 }
 
 /* ── Scroll-in animations ───────────────────────────── */

@@ -138,13 +138,6 @@
     item('🌿', 86, 0.83, '1.7rem');
     item('🌼', 85, 0.97, '1.5rem');
 
-    // Lily pads & rocks near each pond
-    item('🪷', 4,  0.20, '1.1rem');
-    item('🪨', 7,  0.22, '1.2rem');
-    item('🪷', 85, 0.50, '1rem');
-    item('🪨', 87, 0.52, '1.1rem');
-    item('🪷', 5,  0.78, '1.1rem');
-    item('🪨', 2,  0.80, '1.2rem');
 
     // Wandering animals — each starts at a different depth
     const defs = [
