@@ -8,11 +8,11 @@
   document.head.appendChild(s);
 
   [
-    { top: '7vh',  size: '3rem',   dur:  65, delay:   0 },
-    { top: '13vh', size: '2rem',   dur:  92, delay: -35 },
-    { top: '4vh',  size: '2.6rem', dur:  76, delay: -18 },
-    { top: '18vh', size: '1.8rem', dur: 110, delay: -55 },
-    { top: '10vh', size: '2.4rem', dur:  84, delay: -12 },
+    { top: '22vh', size: '3rem',   dur:  65, delay:   0 },
+    { top: '30vh', size: '2rem',   dur:  92, delay: -35 },
+    { top: '17vh', size: '2.6rem', dur:  76, delay: -18 },
+    { top: '37vh', size: '1.8rem', dur: 110, delay: -55 },
+    { top: '26vh', size: '2.4rem', dur:  84, delay: -12 },
   ].forEach(c => {
     const el = document.createElement('div');
     el.className = 'cloud';
@@ -42,7 +42,7 @@
   el.textContent = emoji;
   el.className = 'celestial';
   el.style.cssText = `
-    position:fixed; top:68px; right:18px; font-size:3.5rem;
+    position:fixed; top:100px; right:18px; font-size:3.5rem;
     z-index:99; pointer-events:none; user-select:none;
     line-height:1; filter:drop-shadow(0 3px 6px rgba(0,0,0,0.18));
     transform-origin:center;
@@ -212,6 +212,18 @@
     item('🌼', 87, 0.56, '1.5rem');
     item('🌺', 85, 0.70, '1.4rem');
     item('🌿', 86, 0.83, '1.7rem');
+
+    // Remove any landscape item whose bounding box overlaps a section-inner
+    const sectionInners = Array.from(document.querySelectorAll('.section-inner'));
+    Array.from(lsCont.querySelectorAll('.ls, .ls-pond')).forEach(el => {
+      const r = el.getBoundingClientRect();
+      const overlaps = sectionInners.some(si => {
+        const sr = si.getBoundingClientRect();
+        return r.right > sr.left && r.left < sr.right &&
+               r.bottom > sr.top  && r.top  < sr.bottom;
+      });
+      if (overlaps) el.remove();
+    });
 
     // Precompute section-inner bounding boxes in document coordinates
     window._barriers = Array.from(document.querySelectorAll('.section-inner')).map(el => {
