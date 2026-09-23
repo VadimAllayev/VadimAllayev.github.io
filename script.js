@@ -107,10 +107,25 @@
       }
     });
 
+    const GATHER_RADIUS = 62;
     parade.forEach((a, i) => {
-      const histIdx = Math.min((i + 1) * PARADE_SPACING, posHistory.length - 1);
-      const target  = posHistory[histIdx];
-      const pdx = target.x - a.x, pdy = target.y - a.y;
+      let targetX, targetY;
+
+      if (moving) {
+        // Single-file along duck's path
+        const histIdx = Math.min((i + 1) * PARADE_SPACING, posHistory.length - 1);
+        const t = posHistory[histIdx];
+        targetX = t.x;
+        targetY = t.y;
+      } else {
+        // Fan out into a semicircle below the duck
+        const frac      = parade.length > 1 ? i / (parade.length - 1) : 0.5;
+        const angleRad  = (15 + frac * 150) * Math.PI / 180;
+        targetX = duckX + Math.cos(angleRad) * GATHER_RADIUS;
+        targetY = duckY + Math.sin(angleRad) * GATHER_RADIUS;
+      }
+
+      const pdx = targetX - a.x, pdy = targetY - a.y;
       const pdist = Math.sqrt(pdx * pdx + pdy * pdy);
       const isMoving = pdist > 1;
       if (isMoving) {
