@@ -62,14 +62,15 @@
     const dy   = mouseY - duckY;
     const dist = Math.sqrt(dx * dx + dy * dy);
 
-    if (dist > 40) {
+    const moving = dist > 40;
+    if (moving) {
       duckX += (dx / dist) * SPEED;
       duckY += (dy / dist) * SPEED;
       walkFrame++;
-      const bob  = Math.sin(walkFrame * 0.3) * 4;
-      const flip = dx > 0 ? 'scaleX(-1)' : 'scaleX(1)';
-      duck.style.transform = `${flip} translateY(${bob}px)`;
     }
+    const bob  = moving ? Math.sin(walkFrame * 0.3) * 4 : 0;
+    const flip = dx > 0 ? 'scaleX(-1)' : 'scaleX(1)';
+    duck.style.transform = `${flip} translateY(${bob}px)`;
     duck.style.left = (duckX - 16) + 'px';
     duck.style.top  = (duckY - 16) + 'px';
 
@@ -102,16 +103,16 @@
       const pdy     = target.y - a.y;
       const pdist   = Math.sqrt(pdx * pdx + pdy * pdy);
 
-      if (pdist > 0.5) {
+      const isMoving = pdist > 1;
+      if (isMoving) {
         const step = Math.min(pdist, pdist > 4 ? SPEED * 2 : SPEED);
         a.x += (pdx / pdist) * step;
         a.y += (pdy / pdist) * step;
+        a.walkFrame = (a.walkFrame || 0) + 1;
       }
-
-      a.walkFrame = (a.walkFrame || 0) + 1;
       const flip = pdx > 0 ? 'scaleX(-1)' : pdx < 0 ? 'scaleX(1)' : (a._lastFlip || 'scaleX(1)');
       a._lastFlip = flip;
-      const bob = Math.sin(a.walkFrame * 0.3) * 4;
+      const bob = isMoving ? Math.sin(a.walkFrame * 0.3) * 4 : 0;
       a.el.style.left      = (a.x - 14) + 'px';
       a.el.style.top       = (a.y - 14) + 'px';
       a.el.style.transform = `${flip} translateY(${bob}px)`;
