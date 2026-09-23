@@ -107,23 +107,17 @@
       }
     });
 
-    const GATHER_RADIUS = 62;
-    parade.forEach((a, i) => {
-      let targetX, targetY;
+    // Perpendicular direction to duck's heading — used to stagger followers sideways
+    const headLen = dist > 0 ? dist : 1;
+    const perpX = -(dy / headLen), perpY = dx / headLen;
+    const SIDE_OFFSETS = [0, -22, 22, -12, 12];
 
-      if (moving) {
-        // Single-file along duck's path
-        const histIdx = Math.min((i + 1) * PARADE_SPACING, posHistory.length - 1);
-        const t = posHistory[histIdx];
-        targetX = t.x;
-        targetY = t.y;
-      } else {
-        // Fan out into a semicircle below the duck
-        const frac      = parade.length > 1 ? i / (parade.length - 1) : 0.5;
-        const angleRad  = (15 + frac * 150) * Math.PI / 180;
-        targetX = duckX + Math.cos(angleRad) * GATHER_RADIUS;
-        targetY = duckY + Math.sin(angleRad) * GATHER_RADIUS;
-      }
+    parade.forEach((a, i) => {
+      const histIdx  = Math.min((i + 1) * PARADE_SPACING, posHistory.length - 1);
+      const t        = posHistory[histIdx];
+      const offset   = SIDE_OFFSETS[i % SIDE_OFFSETS.length];
+      const targetX  = t.x + perpX * offset;
+      const targetY  = t.y + perpY * offset;
 
       const pdx = targetX - a.x, pdy = targetY - a.y;
       const pdist = Math.sqrt(pdx * pdx + pdy * pdy);
@@ -136,7 +130,7 @@
       }
       const flipVal = pdx > 0 ? -1 : pdx < 0 ? 1 : (a._lastFlip || 1);
       a._lastFlip = flipVal;
-      const bob = isMoving ? Math.sin(a.walkFrame * 0.3) * 4 : 0;
+      const bob = isMoving ? Math.sin(a.walkFrame * (a.bobFreq || 0.3)) * (a.bobAmp || 4) : 0;
       a.el.style.transform = `translate(${a.x - 14}px,${a.y - 14 + bob}px) scaleX(${flipVal})`;
     });
 
@@ -252,11 +246,11 @@
     });
 
     const defs = [
-      { emoji: '🐇', speed: 2.2, size: 26 },
-      { emoji: '🦊', speed: 1.6, size: 28 },
-      { emoji: '🐢', speed: 0.8, size: 24 },
+      { emoji: '🐇', speed: 2.2, size: 26, bobFreq: 0.50, bobAmp: 4.0 },
+      { emoji: '🦊', speed: 1.6, size: 28, bobFreq: 0.22, bobAmp: 2.5 },
+      { emoji: '🐢', speed: 0.8, size: 24, bobFreq: 0.12, bobAmp: 1.5 },
       { emoji: '🦋', speed: 1.4, size: 22, floaty: true },
-      { emoji: '🐿️', speed: 2.8, size: 22 },
+      { emoji: '🐿️', speed: 2.8, size: 22, bobFreq: 0.42, bobAmp: 3.0 },
     ];
 
     defs.forEach((def, i) => {
@@ -283,6 +277,8 @@
         targetX: 30 + Math.random() * (W - 60),
         targetY: 60  + Math.random() * (docH - 120),
         inParade: false,
+        bobFreq: def.bobFreq,
+        bobAmp:  def.bobAmp,
       });
     });
 
@@ -322,7 +318,7 @@
       const flipVal = dx > 0 ? -1 : 1;
       const bob = a.floaty
         ? Math.sin(a.walkFrame * 0.05 + a.floatOffset) * 7
-        : Math.sin(a.walkFrame * 0.28) * 3;
+        : Math.sin(a.walkFrame * a.bobFreq) * a.bobAmp;
       a.el.style.transform = `translate(${a.x - 14}px,${a.y - 14 + bob}px) scaleX(${flipVal})`;
     });
     requestAnimationFrame(tick);
