@@ -89,8 +89,10 @@
         a.paradeIndex  = parade.length;
         a.x            = a.x;
         a.y            = viewY;
-        a.el.style.position = 'fixed';
-        a.el.style.zIndex   = String(9998 - parade.length);
+        a.el.style.position   = 'fixed';
+        a.el.style.left       = '0';
+        a.el.style.top        = '0';
+        a.el.style.zIndex     = String(9998 - parade.length);
         parade.push(a);
       }
     });
@@ -110,12 +112,10 @@
         a.y += (pdy / pdist) * step;
         a.walkFrame = (a.walkFrame || 0) + 1;
       }
-      const flip = pdx > 0 ? 'scaleX(-1)' : pdx < 0 ? 'scaleX(1)' : (a._lastFlip || 'scaleX(1)');
-      a._lastFlip = flip;
+      const flipVal = pdx > 0 ? -1 : pdx < 0 ? 1 : (a._lastFlip || 1);
+      a._lastFlip = flipVal;
       const bob = isMoving ? Math.sin(a.walkFrame * 0.3) * 4 : 0;
-      a.el.style.left      = (a.x - 14) + 'px';
-      a.el.style.top       = (a.y - 14) + 'px';
-      a.el.style.transform = `${flip} translateY(${bob}px)`;
+      a.el.style.transform = `translate(${a.x - 14}px,${a.y - 14 + bob}px) scaleX(${flipVal})`;
     });
 
     requestAnimationFrame(animate);
@@ -137,7 +137,7 @@
       animation: pondShimmer 5s ease-in-out infinite;
     }
     @keyframes pondShimmer { 0%,100%{opacity:.82} 50%{opacity:1} }
-    .wander { position:absolute; pointer-events:none; user-select:none; z-index:2; line-height:1; }
+    .wander { position:absolute; left:0; top:0; pointer-events:none; user-select:none; z-index:2; line-height:1; will-change:transform; }
     @media (max-width: 900px) { .ls, .ls-pond, .wander { display:none; } }
   `;
   document.head.appendChild(style);
@@ -255,13 +255,11 @@
       a.x += (dx / dist) * a.speed;
       a.y += (dy / dist) * a.speed;
       a.walkFrame++;
-      const flip = dx > 0 ? 'scaleX(-1)' : 'scaleX(1)';
-      const bob  = a.floaty
-        ? `translateY(${Math.sin(a.walkFrame * 0.05 + a.floatOffset) * 7}px)`
-        : `translateY(${Math.sin(a.walkFrame * 0.28) * 3}px)`;
-      a.el.style.left      = (a.x - 14) + 'px';
-      a.el.style.top       = (a.y - 14) + 'px';
-      a.el.style.transform = `${flip} ${bob}`;
+      const flipVal = dx > 0 ? -1 : 1;
+      const bob     = a.floaty
+        ? Math.sin(a.walkFrame * 0.05 + a.floatOffset) * 7
+        : Math.sin(a.walkFrame * 0.28) * 3;
+      a.el.style.transform = `translate(${a.x - 14}px,${a.y - 14 + bob}px) scaleX(${flipVal})`;
     });
     requestAnimationFrame(tick);
   }
