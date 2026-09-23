@@ -3,7 +3,7 @@
   const s = document.createElement('style');
   s.textContent = `
     @keyframes cloudDrift { from { transform:translateX(-220px); } to { transform:translateX(calc(100vw + 220px)); } }
-    .cloud { position:fixed; pointer-events:none; user-select:none; z-index:2; line-height:1; opacity:0.88; }
+    .cloud { position:absolute; pointer-events:none; user-select:none; z-index:2; line-height:1; opacity:0.88; }
   `;
   document.head.appendChild(s);
 
